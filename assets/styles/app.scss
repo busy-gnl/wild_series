@@ -1,5 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 
+$primary: darken(#428bca, 20%);
+
 body {
-  background-color: rgb(128, 85, 85);
+  background-color: $primary;
 }
