@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Catégorie
+	{{category.name}}
+{% endblock %}
+
+
+{% block body %}
+
+	<div class="media">
+
+
+		<div class="media-body">
+
+			<h1 class="mt-0">{{ category.name }}</h1>
+
+			{% for program in programs %}
+
+				<div>
+
+					<h2>{{ loop.index }}
+						/
+						{{ program.title }}
+
+						<p>{{ program.synopsis }}</p>
+						<p>ID de la série :
+							{{program.id}}</p>
+
+						<img class="align-self-start mr-3 poster" src="{{program.poster}}" alt=" poster">
+
+						<a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+
+					</div>
+
+					<br><br>
+
+				{% else %}
+
+					Aucune série trouvée.
+
+				{% endfor %}
+			</div>
+
+		</div>
+
+
+		<a href="{{ path('category_index') }}">
+
+			Retour à la liste des programmes
+
+		</a>
+
+	{% endblock %}
