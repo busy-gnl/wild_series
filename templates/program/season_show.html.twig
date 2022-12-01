@@ -22,31 +22,30 @@
 
 			<p>Catégorie :
 				{{ program.category.name }}</p>
+			<p>Saison
+				{{ season.number }}</p>
+
+			<p>Année :
+				{{ season.year}}</p>
+
+			<p>Description
+				{{ season.description}}</p>
 
 			<ul>
-				<li>Liste des saisons</li>
-				{% for season in program.seasons %}
+				<h5>Liste des épisodes</h5>
+
+				{% for episode in season.episodes %}
 					<li>
-						<a href="/program/{{program.id}}/season/{{season.id}}">
-							Saison
-							{{season.number}}
-						</a>
-						<br>
-						Année de sortie :
-						{{season.year}}</li>
+						Episode
+						{{episode.number}}:
+						{{episode.title}}
+					</li>
 				{% endfor %}
 
 			</ul>
-
 		</div>
-
 	</div>
-
-
 	<a href="{{ path('program_index') }}">
 
-		Retour à la liste des programmes
-
-	</a>
-
+		Retour à la liste des programmes</a>
 {% endblock %}
