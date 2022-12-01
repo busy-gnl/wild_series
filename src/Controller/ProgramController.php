@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Entity\Program;
+use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -31,6 +33,31 @@ class ProgramController extends AbstractController
         );
     }
 
+    /**
+     * The controller for the program add form
+     * Display the form or deal with it
+     */
+    #[Route('/new', name: 'new')]
+    public function new(Request $request): Response
+    {
+        // Create a new program Object
+        $program = new Program();
+        // Create the associated Form
+        $form = $this->createForm(ProgramType::class, $program);
+        // Get data from HTTP request
+        $form->handleRequest($request);
+        // Was the form submitted ?
+        if ($form->isSubmitted()) {
+            // Deal with the submitted data
+            // For example : persiste & flush the entity
+            // And redirect to a route that display the result
+        }
+
+        // Render the form
+        return $this->renderForm('program/new.html.twig', [
+            'form' => $form,
+        ]);
+    }
 
     #[Route('/show/{program}', name: 'show')]
     public function show(Program $program): Response

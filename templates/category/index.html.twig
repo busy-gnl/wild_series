@@ -16,7 +16,7 @@
 
 			<h2>Catégorie
 				{{ loop.index}}:
-				<a href="/category/{{category.name}}">
+				<a href="{{ path("category_show", { categoryName: category.name }) }}">
 					{{ category.name }}</h2>
 			</a>
 
@@ -28,11 +28,19 @@
 
 	{% endfor %}
 
+	<div>
+		<a href="{{ path('category_new') }}">
 
-	<a href="{{ path('app_index') }}">
+			Ajouter une catégorie
 
-		Retour à l'accueil
+		</a>
+	</div>
+	<div>
+		<a href="{{ path('app_index') }}">
 
-	</a>
+			Retour à l'accueil
+
+		</a>
+	</div>
 
 {% endblock %}

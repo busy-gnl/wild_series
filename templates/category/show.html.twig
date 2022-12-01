@@ -13,7 +13,9 @@
 
 		<div class="media-body">
 
-			<h1 class="mt-0">{{ category.name }}</h1>
+			<h1 class="mt-0">
+				Les catégories choisies par Marion :
+				{{ category.name }}</h1>
 
 			{% for program in programs %}
 
@@ -31,7 +33,7 @@
 
 						<img class="align-self-start mr-3 poster" src="{{program.poster}}" alt=" poster">
 
-						<a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+						<a href="{{ path("program_show", { program : program.id }) }}">Voir la fiche</a>
 
 					</div>
 
@@ -46,11 +48,5 @@
 
 		</div>
 
-
-		<a href="{{ path('category_index') }}">
-
-			Retour à la liste des programmes
-
-		</a>
 
 	{% endblock %}
