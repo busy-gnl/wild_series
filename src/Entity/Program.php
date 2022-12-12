@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 
@@ -18,18 +19,31 @@ class Program
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\Unique]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/Plus belle la vie/',
+        match: false,
+        message: "Your synopsis cannot contain the chain 'Plus belle la vie' ",
+    )]
     private ?string $synopsis = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $poster = null;
 
     #[ORM\ManyToOne(inversedBy: 'programs')]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'La catégorie saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères',
+    )]
     private ?string $country = null;
 
     #[ORM\Column]

@@ -21,7 +21,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ],
         [
             'title' => "Breaking Bad",
-            'synopsis' => "Un professeur de chimie qui a le cancer des poumouns devient méchant",
+            'synopsis' => "Un professeur de chimie qui a le cancer des poumons devient méchant",
             'poster' => "https://www.pause-canap.com/media/wysiwyg/serie-breaking-bad.JPG",
             'category' => "category_Action",
             'country' => "USA",
