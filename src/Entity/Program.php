@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ProgramRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
-
+#[UniqueEntity('title')]
 class Program
 {
     #[ORM\Id]
@@ -28,7 +29,7 @@ class Program
     #[Assert\Regex(
         pattern: '/Plus belle la vie/',
         match: false,
-        message: "Your synopsis cannot contain the chain 'Plus belle la vie' ",
+        message: "'Plus belle la vie' is not a serie ",
     )]
     private ?string $synopsis = null;
 
@@ -39,10 +40,9 @@ class Program
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\NotBlank]
     #[Assert\Length(
-        max: 255,
-        maxMessage: 'La catégorie saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères',
+        max: 150
     )]
     private ?string $country = null;
 
