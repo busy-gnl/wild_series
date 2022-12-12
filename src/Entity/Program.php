@@ -33,7 +33,7 @@ class Program
     )]
     private ?string $synopsis = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $poster = null;
 
     #[ORM\ManyToOne(inversedBy: 'programs')]
