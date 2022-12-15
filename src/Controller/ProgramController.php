@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/program')]
 class ProgramController extends AbstractController
 {
-    #[Route('/', name: 'app_program_index', methods: ['GET'])]
+    #[Route('/', name: 'program_index', methods: ['GET'])]
     public function index(RequestStack $requestStack, ProgramRepository $programRepository): Response
     {
         $session = $requestStack->getSession();
@@ -28,7 +28,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_program_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'program_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ProgramRepository $programRepository): Response
     {
         $program = new Program();
@@ -40,7 +40,7 @@ class ProgramController extends AbstractController
 
             $this->addFlash('success', 'The new program has been created');
 
-            return $this->redirectToRoute('app_program_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('program/new.html.twig', [
@@ -49,7 +49,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_program_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'program_show', methods: ['GET'])]
     public function show(Program $program): Response
     {
         return $this->render('program/show.html.twig', [
@@ -57,7 +57,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_program_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'program_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Program $program, ProgramRepository $programRepository): Response
     {
         $form = $this->createForm(ProgramType::class, $program);
@@ -68,7 +68,7 @@ class ProgramController extends AbstractController
 
             $this->addFlash('success', 'The program has been edited');
 
-            return $this->redirectToRoute('app_program_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('program/edit.html.twig', [
@@ -77,14 +77,14 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_program_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'program_delete', methods: ['POST'])]
     public function delete(Request $request, Program $program, ProgramRepository $programRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $program->getId(), $request->request->get('_token'))) {
             $programRepository->remove($program, true);
         }
         $this->addFlash('danger', 'The program has been deleted');
-        return $this->redirectToRoute('app_program_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{program}/season/{season}', name: 'program_season_show')]

@@ -21,8 +21,8 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 
 
         for ($i = 0; $i < 5; $i++) {
-            for ($j = 1; $j < 6; $j++) {
-                for ($k = 1; $k < 11; $k++) {
+            for ($j = 0; $j < 5; $j++) {
+                for ($k = 0; $k < 10; $k++) {
 
 
                     $episode = new Episode();
@@ -45,7 +45,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
     {
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
         return [
-            ProgramFixtures::class
+            SeasonFixtures::class
         ];
     }
 }

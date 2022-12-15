@@ -1,42 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Program{% endblock %}
+{% block title %}Program
+{% endblock %}
 
 {% block body %}
-    <h1>Program</h1>
+	<h1>Program</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ program.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ program.title }}</td>
-            </tr>
-            <tr>
-                <th>Synopsis</th>
-                <td>{{ program.synopsis }}</td>
-            </tr>
-            <tr>
-                <th>Poster</th>
-                <td>{{ program.poster }}</td>
-            </tr>
-            <tr>
-                <th>Country</th>
-                <td>{{ program.country }}</td>
-            </tr>
-            <tr>
-                <th>Year</th>
-                <td>{{ program.year }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ program.id }}</td>
+			</tr>
+			<tr>
+				<th>Title</th>
+				<td>{{ program.title }}</td>
+			</tr>
+			<tr>
+				<th>Synopsis</th>
+				<td>{{ program.synopsis }}</td>
+			</tr>
+			<tr>
+				<th>Poster</th>
+				<td><img src="{{ program.poster }}"></td>
+			</tr>
+			<tr>
+				<th>Country</th>
+				<td>{{ program.country }}</td>
+			</tr>
+			<tr>
+				<th>Year</th>
+				<td>{{ program.year }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_program_index') }}">back to list</a>
+	<strong>Acteurs :</strong>
 
-    <a href="{{ path('app_program_edit', {'id': program.id}) }}">edit</a>
+	<ul>
 
-    {{ include('program/_delete_form.html.twig') }}
+		{% for actor in program.actors %}
+
+			<li>
+				<a href="{{ path("app_actor_show", {'id': actor.id}) }}">{{ actor.name }}</a>
+			</li>
+
+		{% else %}
+
+			<li>Aucun acteur pour cette série</li>
+
+		{% endfor %}
+
+	</ul>
+
+	<a href="{{ path('program_index') }}">back to list</a>
+
+	<a href="{{ path('program_edit', {'id': program.id}) }}">edit</a>
+
+	{{ include('program/_delete_form.html.twig') }}
 {% endblock %}
