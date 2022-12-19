@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Actor;
+use App\Entity\Program;
 use App\Form\ActorType;
 use App\Repository\ActorRepository;
+use App\Repository\ProgramRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,10 +43,12 @@ class ActorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_actor_show', methods: ['GET'])]
-    public function show(Actor $actor): Response
+    public function show(Actor $actor, ProgramRepository $programRepository): Response
     {
+        $program = $programRepository->findAll();
         return $this->render('actor/show.html.twig', [
             'actor' => $actor,
+            'program' => $program
         ]);
     }
 
@@ -69,7 +73,7 @@ class ActorController extends AbstractController
     #[Route('/{id}', name: 'app_actor_delete', methods: ['POST'])]
     public function delete(Request $request, Actor $actor, ActorRepository $actorRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$actor->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $actor->getId(), $request->request->get('_token'))) {
             $actorRepository->remove($actor, true);
         }
 
