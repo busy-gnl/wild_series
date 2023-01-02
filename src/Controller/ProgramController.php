@@ -29,9 +29,11 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'program_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    public function new(Request $request, ProgramRepository $programRepository, SluggerInterface $slugger): Response
     {
         $program = new Program();
+        $slug = $slugger->slug($program->getTitle());
+        $program->setSlug($slug);
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 

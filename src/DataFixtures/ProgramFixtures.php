@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Program;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
@@ -53,12 +54,18 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger
+    }
+
     public function load(ObjectManager $manager)
     {
         foreach (SELF::PROGRAMS as $key => $serie) {
 
             $program = new Program();
             $program->setTitle($serie['title']);
+            $program->setSlug($serie['title']);
 
             $program->setSynopsis($serie['synopsis']);
 
