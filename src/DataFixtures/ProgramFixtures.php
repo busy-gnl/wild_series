@@ -54,9 +54,11 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
+    private $slugger;
+
     public function __construct(SluggerInterface $slugger)
     {
-        $this->slugger = $slugger
+        $this->slugger = $slugger;
     }
 
     public function load(ObjectManager $manager)
@@ -65,8 +67,8 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
             $program = new Program();
             $program->setTitle($serie['title']);
-            $program->setSlug($serie['title']);
-
+            $slug = $this->slugger->slug($program->getTitle());
+            $program->setSlug($slug);
             $program->setSynopsis($serie['synopsis']);
 
             $program->setPoster($serie['poster']);

@@ -20,7 +20,6 @@ class Program
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\Unique]
     #[Assert\NotBlank]
     private ?string $title = null;
 
