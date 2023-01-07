@@ -25,7 +25,7 @@ class EpisodeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_episode_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MailerInterface $mailer, EpisodeRepository $episodeRepository, SluggerInterface $slugger): Response
+    public function new(Request $request, MailerInterface $mailer, EpisodeRepository $episodeRepository, SluggerInterface $slugger, Program $program): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
@@ -44,7 +44,7 @@ class EpisodeController extends AbstractController
 
             ->subject('Un nouvel épisode vient d\'être publié !')
 
-            ->html($this->renderView('mail/new_episode.html.twig', ['episode' => $episode]));
+            ->html($this->renderView('mail/new_episode.html.twig', ['episode' => $episode, 'program' => $program]));
 
 
     $mailer->send($email);
@@ -90,10 +90,10 @@ class EpisodeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_episode_delete', methods: ['POST'])]
+    #[Route('/{slug}', name: 'app_episode_delete', methods: ['POST'])]
     public function delete(Request $request, Episode $episode, EpisodeRepository $episodeRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $episode->getSlug(), $request->request->get('_token'))) {
             $episodeRepository->remove($episode, true);
         }
         $this->addFlash('danger', 'The episode has been deleted');
