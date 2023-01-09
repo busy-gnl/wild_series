@@ -67,7 +67,8 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
             $program = new Program();
             $program->setTitle($serie['title']);
-           
+            $slug = $this->slugger->slug($program->getTitle());
+            $program->setSlug($slug);
             $program->setSynopsis($serie['synopsis']);
 
             $program->setPoster($serie['poster']);
