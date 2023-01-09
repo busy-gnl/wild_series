@@ -7,8 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\DBAL\Types\DateImmutableType;
+use Doctrine\DBAL\Types\Types;
+
+//Ici on importe le package Vich, que l’on utilisera sous l’alias “Vich”
+
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
+#[Vich\Uploadable]
 class Actor
 {
     #[ORM\Id]
@@ -23,8 +31,18 @@ class Actor
     )]
     private ?string $name = null;
 
+    #[Vich\UploadableField(mapping: 'actor_file', fileNameProperty: 'picture')]
+    private ?File $actorFile = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DatetimeInterface $updatedAt = null;
+
+
     #[ORM\ManyToMany(targetEntity: Program::class, inversedBy: 'actors')]
     private Collection $programs;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
 
     public function __construct()
     {
@@ -68,6 +86,18 @@ class Actor
     public function removeProgram(Program $program): self
     {
         $this->programs->removeElement($program);
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }

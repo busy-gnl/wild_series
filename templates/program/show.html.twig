@@ -22,7 +22,9 @@
 			</tr>
 			<tr>
 				<th>Poster</th>
-				<td><img src="{{ program.poster }}"></td>
+				<td><img src="{{ program.poster }}">
+				</td>
+				<td><img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
 			</tr>
 			<tr>
 				<th>Country</th>

@@ -33,7 +33,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'program_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MailerInterface $mailer ,ProgramRepository $programRepository, SluggerInterface $slugger): Response
+    public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, SluggerInterface $slugger): Response
     {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
@@ -41,20 +41,22 @@ class ProgramController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugger->slug($program->getTitle());
-        $program->setSlug($slug);
+            $program->setSlug($slug);
+            $program->setPoster($slug);
+
             $programRepository->save($program, true);
-            
+
             $email = (new Email())
-    
-                    ->from($this->getParameter('mailer_from'))
-    
-                    ->to('vallantjesse@live.com')
-    
-                    ->subject('Une nouvelle série vient d\'être publiée !')
-    
-                    ->html($this->renderView('mails/new_program.html.twig', ['program' => $program]));
-    
-    
+
+                ->from($this->getParameter('mailer_from'))
+
+                ->to('vallantjesse@live.com')
+
+                ->subject('Une nouvelle série vient d\'être publiée !')
+
+                ->html($this->renderView('mails/new_program.html.twig', ['program' => $program]));
+
+
             $mailer->send($email);
 
             $this->addFlash('success', 'The new program has been created');

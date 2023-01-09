@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>actions</th>
+                <th>Picture</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,8 @@
                 <td>
                     <a href="{{ path('app_actor_show', {'id': actor.id}) }}">show</a>
                     <a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+                </td>
+                <td><img src="{{ vich_uploader_asset(actor) }}" alt="{{ actor.name }}">
                 </td>
             </tr>
         {% else %}
