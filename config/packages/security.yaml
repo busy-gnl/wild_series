@@ -24,11 +24,15 @@ security:
       logout:
         path: app_logout
 
-      # activate different ways to authenticate
-      # https://symfony.com/doc/current/security.html#the-firewall
+  role_hierarchy:
+    ROLE_CONTRIBUTOR: ROLE_USER
+    ROLE_ADMIN: ROLE_CONTRIBUTOR
 
-      # https://symfony.com/doc/current/security/impersonating_user.html
-      # switch_user: true
+    # activate different ways to authenticate
+    # https://symfony.com/doc/current/security.html#the-firewall
+
+    # https://symfony.com/doc/current/security/impersonating_user.html
+    # switch_user: true
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
