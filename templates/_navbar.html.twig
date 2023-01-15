@@ -21,32 +21,35 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a class="dropdown-item" href="/episode">Episode crud</a>
+							<a class="dropdown-item" href="/episode">Episodes</a>
 						</li>
-						<li>
-							<a class="dropdown-item" href="/season">Season crud</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="/actor">Acteurs</a>
-						</li>
-					</ul>
+					</li>
 				</li>
 				<li>
-					{% if app.user %}
-
-						{{ app.user.email }}
-
-						<a href="{{ path('app_logout') }}">
-							Se déconnecter</a>
-
-					{% else %}
-
-						<a href="{{ path('app_login') }}">
-							Se connecter</a>
-
-					{% endif %}
+					<a class="dropdown-item" href="/season">Seasons</a>
+				</li>
+				<li>
+					<a class="dropdown-item" href="/actor">Acteurs</a>
+				</li>
+				<li>
+					<a class="dropdown-item" href="/comment">Comment</a>
 				</li>
 			</ul>
-		</div>
-	</div>
-</nav>
+		</li>
+		<li>
+			{% if app.user %}
+
+				{{ app.user.email }}
+
+				<a href="{{ path('app_logout') }}">
+					Se déconnecter</a>
+
+			{% else %}
+
+				<a href="{{ path('app_login') }}">
+					Se connecter</a>
+
+			{% endif %}
+		</li>
+	</ul>
+</div></div></nav>

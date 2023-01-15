@@ -27,6 +27,10 @@
 		</tbody>
 	</table>
 
+	{% if app.user %}
+		<a href="{{ path('app_comment_new') }}">leave a comment</a>
+	{% endif %}
+
 	<a href="{{ path('app_episode_index') }}">back to list</a>
 
 	<a href="{{ path('app_episode_edit', {'slug': episode.slug}) }}">edit</a>
