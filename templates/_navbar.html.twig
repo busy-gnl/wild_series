@@ -4,26 +4,34 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav d-flex justify-content-between container-fluid">
-				<li class="nav-item">
+			<ul class="navbar-nav d-flex justify-content-between align-items-center container-fluid">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link active" aria-current="page" href="/">Home</a>
 				</li>
-				<li class="nav-item">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/program">Programmes</a>
 				</li>
-				<li class="nav-item">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/category">Catégories</a>
 				</li>
-				<li class="nav-item">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/episode">Episodes</a>
 				</li>
-				<li class="nav-item">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/season">Seasons</a>
 				</li>
-				<li class="nav-item">
+				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/actor">Acteurs</a>
 				</li>
-				<li class="nav-item fw-bold border rounded-4">
+				{% if app.user %}
+					<li class="nav-item fw-bold border rounded-4 p-2">
+
+						<a class="nav-link" href="{{ path('app_profile') }}">
+							Mon profil</a>
+
+					</li>
+				{% endif %}
+				<li class="nav-item fw-bold border rounded-4 p-2 text-center">
 					{% if app.user %}
 
 						<span>Hello

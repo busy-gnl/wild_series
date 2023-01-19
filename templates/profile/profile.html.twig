@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<pre>
+    {{ dump(app.user) }}
+</pre>
+	<div>
+		<ul>
+			<li>Votre email :
+				{{app.user.email}}
+			</li>
+			<li>Votre pseudo :
+				{{app.user.username}}
+			</li>
+			<li>Votre biographie :
+				{{app.user.bio}}
+			</li>
+		</ul>
+	</div>
+{% endblock %}

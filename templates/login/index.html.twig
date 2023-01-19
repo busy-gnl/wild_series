@@ -7,8 +7,8 @@
 	{% if error %}
 		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 	{% endif %}
-
-	<form action="{{ path('app_login') }}" method="post">
+	<h1 class="text-center mt-5">Connectez-vous</h1>
+	<form class="d-flex flex-column align-items-center gap-3 mt-5" action="{{ path('app_login') }}" method="post">
 		<label for="username">Email:</label>
 		<input type="text" id="username" name="_username" value="{{ last_username }}">
 
@@ -20,4 +20,10 @@
 
 		<button type="submit">login</button>
 	</form>
+	<div class="text-center my-3">
+		<a href="{{ path('app_register') }}">Pas encore de compte?</a>
+	</div>
+	<div class="text-center my-3">
+		<a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié?</a>
+	</div>
 {% endblock %}
