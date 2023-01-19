@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Form\ProgramType;
+use App\Repository\CommentRepository;
 use App\Service\ProgramDuration;
 use Symfony\Component\Mime\Email;
 use App\Repository\ProgramRepository;
@@ -43,7 +45,7 @@ class ProgramController extends AbstractController
             $slug = $slugger->slug($program->getTitle());
             $program->setSlug($slug);
             $program->setPoster($slug);
-
+            $program->setOwner($this->getUser());
             $programRepository->save($program, true);
 
             $email = (new Email())
@@ -87,6 +89,13 @@ class ProgramController extends AbstractController
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
+        if ($this->getUser() !== $program->getOwner()) {
+
+            // If not the owner, throws a 403 Access Denied exception
+
+            throw $this->createAccessDeniedException('Only the owner can edit the program!');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugger->slug($program->getTitle());
             $program->setSlug($slug);
@@ -113,7 +122,9 @@ class ProgramController extends AbstractController
         return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{program}/season/{season}', name: 'program_season_show')]
+    #[Route('/{programSlug}/season/{seasonId}', name: 'program_season_show')]
+    #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
+    #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
     public function showSeason(Program $program, Season $season)
     {
 
@@ -123,16 +134,18 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/program/{programId}/season/{seasonId}/episode/{episodeId}', name: 'program_episode_show')]
-    #[Entity('program', options: ['mapping' => ['programId' => 'id']])]
+    #[Route('/{programSlug}/season/{seasonId}/episode/{episodeSlug}', name: 'program_episode_show')]
+    #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
     #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
-    #[Entity('episode', options: ['mapping' => ['episodeId' => 'id']])]
-    public function showEpisode(Program $program, Season $season, Episode $episode)
+    #[Entity('episode', options: ['mapping' => ['episodeSlug' => 'slug']])]
+    public function showEpisode(Program $program, Season $season, Episode $episode, CommentRepository $commentRepository)
     {
+
         return $this->render('program/episode_show.html.twig', [
             "program" => $program,
             "season" => $season,
-            "episode" => $episode
+            "episode" => $episode,
+            "comments" => $commentRepository->findAll()
         ]);
     }
 }

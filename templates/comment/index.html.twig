@@ -12,6 +12,7 @@
 				<th>Id</th>
 				<th>Comment</th>
 				<th>Rate</th>
+				<th>Author</th>
 				<th>actions</th>
 			</tr>
 		</thead>
@@ -22,9 +23,17 @@
 					<td>{{ comment.comment }}</td>
 					<td>{{ comment.rate }}</td>
 					<td>
+						<p>{{ comment.author.email }}
+							added this comment on
+							{{ comment.publishedAt | date("d/m/Y") }}</p>
+					</td>
+					<td>
 						<a href="{{ path('app_comment_show', {'id': comment.id}) }}">show</a>
-						<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">edit</a>
-						{{ include('comment/_delete_form.html.twig') }}
+						{% if is_granted("ROLE_CONTRIBUTOR") %}
+
+							<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">edit</a>
+							{{ include('comment/_delete_form.html.twig') }}
+						{% endif %}
 					</td>
 				</tr>
 			{% else %}
@@ -34,6 +43,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
-
-	<a href="{{ path('app_comment_new') }}">Create new</a>
+	{% if is_granted("ROLE_CONTRIBUTOR") %}
+		<a href="{{ path('app_comment_new') }}">Create new</a>
+	{% endif %}
 {% endblock %}

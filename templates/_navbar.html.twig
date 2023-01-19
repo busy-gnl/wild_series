@@ -1,11 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-light">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="#">Navbar</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav">
+			<ul class="navbar-nav d-flex justify-content-between container-fluid">
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="/">Home</a>
 				</li>
@@ -15,41 +14,33 @@
 				<li class="nav-item">
 					<a class="nav-link" href="/category">Catégories</a>
 				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Dropdown link
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a class="dropdown-item" href="/episode">Episodes</a>
-						</li>
-					</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/episode">Episodes</a>
 				</li>
-				<li>
-					<a class="dropdown-item" href="/season">Seasons</a>
+				<li class="nav-item">
+					<a class="nav-link" href="/season">Seasons</a>
 				</li>
-				<li>
-					<a class="dropdown-item" href="/actor">Acteurs</a>
+				<li class="nav-item">
+					<a class="nav-link" href="/actor">Acteurs</a>
 				</li>
-				<li>
-					<a class="dropdown-item" href="/comment">Comment</a>
+				<li class="nav-item fw-bold border rounded-4">
+					{% if app.user %}
+
+						<span>Hello
+							{{ app.user.email }}</span>
+
+
+						<a class="nav-link" href="{{ path('app_logout') }}">
+							Se déconnecter</a>
+
+					{% else %}
+
+						<a class="nav-link" href="{{ path('app_login') }}">
+							Se connecter</a>
+
+					{% endif %}
 				</li>
 			</ul>
-		</li>
-		<li>
-			{% if app.user %}
-
-				{{ app.user.email }}
-
-				<a href="{{ path('app_logout') }}">
-					Se déconnecter</a>
-
-			{% else %}
-
-				<a href="{{ path('app_login') }}">
-					Se connecter</a>
-
-			{% endif %}
-		</li>
-	</ul>
-</div></div></nav>
+		</div>
+	</div>
+</nav>

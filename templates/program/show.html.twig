@@ -22,9 +22,9 @@
 			</tr>
 			<tr>
 				<th>Poster</th>
-				<td><img src="{{ program.poster }}">
-				</td>
-				<td><img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
+				<td><img class="img-poster" src="{{ program.poster }}">
+
+					<img class="img-poster" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
 			</tr>
 			<tr>
 				<th>Country</th>
@@ -34,30 +34,51 @@
 				<th>Year</th>
 				<td>{{ program.year }}</td>
 			</tr>
+			<tr>
+				<th>Seasons</th>
+				<td style="width: 150px">
+					{% for season in program.seasons %}
+						<li>
+							<a href="{{ path('program_season_show', { programSlug : program.slug, seasonId : season.id }) }}">
+								Season
+								{{ season.number }}
+							</a>
+						</li>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Actors</th>
+				<td>
+					{% for actor in program.actors %}
+
+						<li>
+							<a href="{{ path("app_actor_show", {'id': actor.id}) }}">{{ actor.name }}</a>
+						</li>
+
+					{% else %}
+
+						<li>Aucun acteur pour cette série</li>
+
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Actions</th>
+				<td>
+					<li>
+						<a href="{{ path('program_index') }}">back to list</a>
+					</li>
+					<li>
+						<a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a>
+					</li>
+					<li>
+						{{ include('program/_delete_form.html.twig') }}
+					</li>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
-	<strong>Acteurs :</strong>
 
-	<ul>
-
-		{% for actor in program.actors %}
-
-			<li>
-				<a href="{{ path("app_actor_show", {'id': actor.id}) }}">{{ actor.name }}</a>
-			</li>
-
-		{% else %}
-
-			<li>Aucun acteur pour cette série</li>
-
-		{% endfor %}
-
-	</ul>
-
-	<a href="{{ path('program_index') }}">back to list</a>
-
-	<a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a>
-
-	{{ include('program/_delete_form.html.twig') }}
 {% endblock %}

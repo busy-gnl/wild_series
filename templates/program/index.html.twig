@@ -4,43 +4,55 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Program index</h1>
+<h1>Program index</h1>
 
-	<table class="table">
-		<thead>
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width: 50px">Id</th>
+			<th style="width: 150px">Title</th>
+			<th style="width: 200px">Synopsis</th>
+			<th style="width: 200px">Poster</th>
+			<th style="width: 50px">Country</th>
+			<th style="width: 50px">Year</th>
+			<th style="width: 150px">Seasons</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for program in programs %}
 			<tr>
-				<th>Id</th>
-				<th>Title</th>
-				<th>Synopsis</th>
-				<th>Poster</th>
-				<th>Poster</th>
-				<th>Country</th>
-				<th>Year</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for program in programs %}
-				<tr>
-					<td>{{ program.id }}</td>
-					<td>{{ program.title }}</td>
-					<td>{{ program.synopsis }}</td>
-					<td><img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
-					<td>{{ program.country }}</td>
-					<td>{{ program.year }}</td>
-					<td>
+				<td style="width: 50px">{{ program.id }}</td>
+				<td style="width: 150px">{{ program.title }}</td>
+				<td style="width: 200px">{{ program.synopsis }}</td>
+				{% if program.poster %}
+					<td style="width: 200px"><img class="img-poster" style="width: 200px" src="{{ program.poster }}"></td>
+				{% else %}
+					<td style="width: 200px"><img class="img-poster" style="width: 200px" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
+				{% endif %}
+				<td style="width: 50px">{{ program.country }}</td>
+				<td style="width: 50px">{{ program.year }}</td>
+				<td style="width: 150px">
+					{% for season in program.seasons %}
+						<li>
+							<a href="{{ path('program_season_show', { programSlug : program.slug, seasonId : season.id }) }}">
+								Season
+								{{ season.number }}
+							</a>
+						</li>
+					{% endfor %}
+				</td>
+				<td>
+					<li>
 						<a href="{{ path('program_show', {'slug': program.slug}) }}">show</a>
+					</li>
+					<li>
 						<a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a>
-						{{ include('program/_delete_form.html.twig') }}
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="7">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-	<a href="{{ path('program_new') }}">Create new</a>
-{% endblock %}
+					</li>
+					<li>{{ include('program/_delete_form.html.twig') }}
+					</li>
+				</td>
+			</tr>
+		</li>
+	</tbody>
+</tr>{% endfor %}</tbody></td></tbody></tr></table><a href="{{ path('program_new') }}">Create new</a>{% endblock %}

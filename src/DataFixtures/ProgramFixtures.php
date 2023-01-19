@@ -56,6 +56,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
     private $slugger;
 
+
     public function __construct(SluggerInterface $slugger)
     {
         $this->slugger = $slugger;
@@ -74,7 +75,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setPoster($serie['poster']);
             $program->setCountry($serie['country']);
             $program->setYear($serie['year']);
-
+            $program->setOwner($this->getReference('admin@monsite.com'));
             $program->setCategory($this->getReference($serie['category']));
             $manager->persist($program);
             $this->addReference('program_' . $key, $program);
@@ -87,6 +88,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
         return [
             CategoryFixtures::class,
+            UserFixtures::class,
         ];
     }
 }

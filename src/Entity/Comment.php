@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentRepository;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
     #[ORM\Id]
@@ -26,6 +28,9 @@ class Comment
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $publishedAt = null;
 
     public function getId(): ?int
     {
@@ -76,6 +81,19 @@ class Comment
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setPublishedAt(): self
+    {
+        $this->publishedAt = new \DateTimeImmutable();
 
         return $this;
     }

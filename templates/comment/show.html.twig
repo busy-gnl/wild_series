@@ -24,12 +24,24 @@
 				<th>Author</th>
 				<td>{{ comment.author.email }}</td>
 			</tr>
+			<tr>
+				<td>
+					<p>{{ author.name }}
+						added this comment on
+						{{ comment.updatedAt|date }}</p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
 	<a href="{{ path('app_comment_index') }}">back to list</a>
 
-	<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">edit</a>
+	{% if is_granted("ROLE_CONTRIBUTOR") %}
 
-	{{ include('comment/_delete_form.html.twig') }}
+		<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">edit</a>
+
+		{{ include('comment/_delete_form.html.twig') }}
+
+	{% endif %}
+
 {% endblock %}

@@ -102,4 +102,17 @@ class EpisodeController extends AbstractController
 
         return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{programSlug}/season/{seasonId}/episode/{episodeSlug}', name: 'program_episode_show')]
+    #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
+    #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
+    #[Entity('episode', options: ['mapping' => ['episodeSlug' => 'slug']])]
+    public function showEpisode(Program $program, Season $season, Episode $episode)
+    {
+        return $this->render('program/episode_show.html.twig', [
+            "program" => $program,
+            "season" => $season,
+            "episode" => $episode
+        ]);
+    }
 }
