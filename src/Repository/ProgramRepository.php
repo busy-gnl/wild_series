@@ -62,7 +62,7 @@ class ProgramRepository extends ServiceEntityRepository
     public function findLikeName(string $name): array
     {
         return $this->createQueryBuilder('p')
-            ->join(Actor::class, 'a')
+            ->join('p.actors', 'a')
             ->andWhere('p.title LIKE :name')
             ->orWhere('a.name LIKE :name')
             ->setParameter('name', '%' . $name . '%')
