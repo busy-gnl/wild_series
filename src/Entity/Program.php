@@ -79,6 +79,9 @@ class Program
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'watchlist')]
     private Collection $viewers;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isUploaded = null;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
@@ -242,6 +245,7 @@ class Program
         if ($image) {
 
             $this->updatedAt = new \DateTime('now');
+            $this->isUploaded = true;
         }
 
 
@@ -313,6 +317,18 @@ class Program
         if ($this->viewers->removeElement($viewer)) {
             $viewer->removeWatchlist($this);
         }
+
+        return $this;
+    }
+
+    public function isIsUploaded(): ?bool
+    {
+        return $this->isUploaded;
+    }
+
+    public function setIsUploaded(?bool $isUploaded): self
+    {
+        $this->isUploaded = $isUploaded;
 
         return $this;
     }
