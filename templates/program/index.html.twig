@@ -15,6 +15,7 @@
 
 {{ form_end(form) }}
 
+
 <table class="table">
 	<thead>
 		<tr>
@@ -26,6 +27,7 @@
 			<th style="width: 50px">Actors</th>
 			<th style="width: 50px">Year</th>
 			<th style="width: 150px">Seasons</th>
+			<th style="width: 50px">Add to Watchlist</th>
 			<th>Actions</th>
 		</tr>
 	</thead>
@@ -56,6 +58,19 @@
 							</a>
 						</li>
 					{% endfor %}
+				</td>
+				<td style="width: 50px">
+					<li>
+						{% if app.user %}
+							<div>
+								<a href="{{ path('program_watchlist', {id: program.id})}}">
+
+									<i class="bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+
+								</a>
+							</div>
+						{% endif %}
+					</li>
 				</td>
 				<td>
 					<li>

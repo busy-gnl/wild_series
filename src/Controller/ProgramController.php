@@ -3,20 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Season;
-use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Form\ProgramType;
 use App\Form\SearchProgramType;
 use App\Service\ProgramDuration;
 use Symfony\Component\Mime\Email;
+use App\Repository\UserRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ProgramRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,8 +45,12 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'program_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, SluggerInterface $slugger): Response
-    {
+    public function new(
+        Request $request,
+        MailerInterface $mailer,
+        ProgramRepository $programRepository,
+        SluggerInterface $slugger
+    ): Response {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
@@ -94,8 +98,12 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/{slug}/edit', name: 'program_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Program $program, ProgramRepository $programRepository, SluggerInterface $slugger): Response
-    {
+    public function edit(
+        Request $request,
+        Program $program,
+        ProgramRepository $programRepository,
+        SluggerInterface $slugger
+    ): Response {
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
@@ -148,8 +156,12 @@ class ProgramController extends AbstractController
     #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
     #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
     #[Entity('episode', options: ['mapping' => ['episodeSlug' => 'slug']])]
-    public function showEpisode(Program $program, Season $season, Episode $episode, CommentRepository $commentRepository)
-    {
+    public function showEpisode(
+        Program $program,
+        Season $season,
+        Episode $episode,
+        CommentRepository $commentRepository
+    ) {
 
         return $this->render('program/episode_show.html.twig', [
             "program" => $program,
@@ -157,5 +169,27 @@ class ProgramController extends AbstractController
             "episode" => $episode,
             "comments" => $commentRepository->findAll()
         ]);
+    }
+
+    #[Route('/{id}/watchlist', name: 'program_watchlist', methods: ["GET", "POST"])]
+    public function addToWatchlist(Program $program, UserRepository $userRepository): Response
+    {
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with this id found in program\'s table.'
+            );
+        }
+
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+        if ($user->isInWatchlist($program)) {
+            $user->removeFromWatchlist($program);
+        } else {
+            $user->addToWatchlist($program);
+        }
+
+        $userRepository->save($user, true);
+
+        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }

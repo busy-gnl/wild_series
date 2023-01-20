@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,11 +45,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Program::class)]
     private Collection $programs;
 
+    #[ORM\ManyToMany(targetEntity: Program::class, inversedBy: 'viewers')]
+    #[ORM\JoinTable(name: 'watchlist')]
+    private Collection $watchlist;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->programs = new ArrayCollection();
+        $this->watchlist = new ArrayCollection();
     }
+
+    // public function serialize()
+    // {
+    //     return serialize([
+    //         'id' => $this->getId(),
+    //         'username' => $this->getUsername(),
+    //         'password' => $this->getPassword(),
+    //     ]);
+    // }
+
+    // public function unserialize($data)
+    // {
+    //     $unserialized = unserialize($data);
+
+    //     $this->setId($unserialized['id']);
+    //     $this->setId($unserialized['username']);
+    //     $this->setId($unserialized['password']);
+    // }
 
     public function getId(): ?int
     {
@@ -202,5 +226,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Program>
+     */
+    public function getWatchlist(): Collection
+    {
+        return $this->watchlist;
+    }
+
+    public function addToWatchlist(Program $program): self
+    {
+        if (!$this->watchlist->contains($program)) {
+            $this->watchlist[] = $program;
+        }
+
+        return $this;
+    }
+
+    public function removeFromWatchlist(Program $program): self
+    {
+        $this->watchlist->removeElement($program);
+
+        return $this;
+    }
+
+    public function isInWatchlist(Program $program): bool
+    {
+        if ($this->watchlist->contains($program)) return true;
+        else return false;
     }
 }
