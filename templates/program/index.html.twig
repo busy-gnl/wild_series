@@ -4,7 +4,16 @@
 {% endblock %}
 
 {% block body %}
-<h1>Program index</h1>
+<h1 class="text-center">Toutes les séries</h1>
+
+
+{{ form_start(form) }}
+
+{{ form_widget(form) }}
+
+<button class="btn fw-bold border rounded my-3">Search</button>
+
+{{ form_end(form) }}
 
 <table class="table">
 	<thead>
@@ -14,6 +23,7 @@
 			<th style="width: 200px">Synopsis</th>
 			<th style="width: 200px">Poster</th>
 			<th style="width: 50px">Country</th>
+			<th style="width: 50px">Actors</th>
 			<th style="width: 50px">Year</th>
 			<th style="width: 150px">Seasons</th>
 			<th>Actions</th>
@@ -31,6 +41,11 @@
 					<td style="width: 200px"><img class="img-poster" style="width: 200px" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}"></td>
 				{% endif %}
 				<td style="width: 50px">{{ program.country }}</td>
+				<td style="width: 50px">
+					{% for actor in program.actors %}
+						<li>{{ actor.name }}</li>
+					{% endfor %}
+				</td>
 				<td style="width: 50px">{{ program.year }}</td>
 				<td style="width: 150px">
 					{% for season in program.seasons %}

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Actor;
 use App\Entity\Program;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -52,6 +53,35 @@ class ProgramRepository extends ServiceEntityRepository
             ->setMaxResults(3)
             ->getQuery()
             ->getResult();
+    }
+
+
+    /**
+     * @return Program[] Returns an array of Program objects
+     */
+    public function findLikeName(string $name): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join(Actor::class, 'a')
+            ->andWhere('p.title LIKE :name')
+            ->orWhere('a.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Program[] Returns an array of Program objects
+     */
+    public function findRecentPrograms(): array
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT p, s FROM App\Entity\Program p
+                              INNER JOIN p.seasons s
+                              WHERE s.year>2010');
+
+        return $query->execute();
     }
 
     //    /**
