@@ -80,8 +80,6 @@ class ProgramController extends AbstractController
             return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
         }
 
-
-
         return $this->renderForm('program/new.html.twig', [
             'program' => $program,
             'form' => $form,
@@ -171,7 +169,8 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/watchlist', name: 'program_watchlist', methods: ["GET", "POST"])]
+    #[Route('/{id}/watchlist', name: 'program_watchlist', methods: ["GET"])]
+    #[Entity('program', options: ['mapping' => ['id' => 'id']])]
     public function addToWatchlist(Program $program, UserRepository $userRepository): Response
     {
         if (!$program) {
@@ -190,6 +189,10 @@ class ProgramController extends AbstractController
 
         $userRepository->save($user, true);
 
-        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()], Response::HTTP_SEE_OTHER);
+        return $this->json([
+
+            'isInWatchlist' => $user->isInWatchlist($program),
+
+        ]);
     }
 }
