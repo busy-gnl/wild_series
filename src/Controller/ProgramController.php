@@ -169,9 +169,8 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/watchlist', name: 'program_watchlist', methods: ["GET"])]
-    #[Entity('program', options: ['mapping' => ['id' => 'id']])]
-    public function addToWatchlist(Program $program, UserRepository $userRepository): Response
+    #[Route('/{id}/watchlist', name: 'program_watchlist', methods: ['POST', 'GET'])]
+    public function addToWatchlist(int $id, Program $program, UserRepository $userRepository): Response
     {
         if (!$program) {
             throw $this->createNotFoundException(

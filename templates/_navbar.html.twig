@@ -11,9 +11,15 @@
 				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/program">Programmes</a>
 				</li>
-				<li class="nav-item fw-semibold">
-					<a class="nav-link" href="/category">Catégories</a>
+				<li id="dropdown" class="nav-item fw-semibold">
+					<a class="nav-link dropdown-toggle" href="#dropdown" role="button" data-bs-toggle="#dropdown" aria-expanded="false">
+						Catégories
+					</a>
+					<ul class="dropdown-menu">
+						{{ render(controller('App\\Controller\\DefaultController::navbarTop')) }}
+					</ul>
 				</li>
+
 				<li class="nav-item fw-semibold">
 					<a class="nav-link" href="/episode">Episodes</a>
 				</li>
